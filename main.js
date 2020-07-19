@@ -2,8 +2,46 @@
 const EMPTY_HEART = '♡'
 const FULL_HEART = '♥'
 
+const errorModal = document.getElementById("modal")
+
 // Your JavaScript code goes here!
 
+document.addEventListener("DOMContentLoaded", function(){
+  document.addEventListener("click", function(e){
+    if(e.target.matches(".like-glyph")){
+      if(e.target.matches(".activated-heart")){
+        e.target.innerHTML = EMPTY_HEART;
+        e.target.classList.remove("activated-heart")
+      }
+      else{
+        mimicServerCall()
+        .then((response) => {
+          return response
+        })
+        .then((whatever) => {
+          e.target.innerHTML = FULL_HEART
+          e.target.classList.add("activated-heart")
+        })
+        .catch((error) => {
+          toggleHidden(error);
+          setTimeout(toggleHidden, 5000);
+        })
+      }
+    }
+
+  })
+})
+
+const toggleHidden = (error) => {
+  if (errorModal.matches(".hidden")){
+    let p = errorModal.querySelector("#modal-message")
+    p.innerHTML = error
+    errorModal.classList.remove("hidden")
+  }
+  else {
+    errorModal.classList.add("hidden")
+  }
+}
 
 
 
